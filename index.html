@@ -1,18 +1,52 @@
 <html>
+
     <head>
         <script>
             function toJson(data) {
-                
+                var result = "";
+                if (data === null) {
+                    return "null";
+                } else if (typeof data == "object") {
 
-
-
-
-                
+                    // 如果是陣列
+                    if (Array.isArray(data)) {
+                        result = '[';
+                        for (var i = 0; i < data.length; i++) {
+                            result += toJson(data[i]) + ",";
+                        }
+                        if (result.length > 1) {
+                            result = result.slice(0, -1); // remove the last common
+                        }
+                        return result + "]";
+                    } else {
+                        // 純物件
+                        result = "{";
+                        for (var prop in data) {
+                            result += '"' + prop + '":' + toJson(data[prop]) + ",";
+                        }
+                        if (result.length > 1) {
+                            result = result.slice(0, -1); // remove the last common
+                        }
+                        return result + "}";
+                    }
+                } else if (typeof data == "string") {
+                    return '"' + data + '"';
+                } else {
+                    return data;
+                }
             }
+            var testData1 = { "firstName": null, "lastName": "Smith", "sex": "male", "age": 25, "address": { "streetAddress": "21 2nd Street", "city": "New York", "state": "NY", "postalCode": "10021" }, "phoneNumber": [{ "type": "home", "number": "212 555-1234" }, { "type": "fax", "number": "646 555-4567" }] };
+            console.log(toJson(testData1));
+            console.log(JSON.stringify(testData1));
+            var testData2 = [{ "text": "This is the text", "color": "dark_red", "bold": true, "strikethough": true, "clickEvent": { "action": "open_url", "value": "zh.wikipedia.org" }, "hoverEvent": { "action": "show_text", "value": { "extra": "something" } } }, { "translate": "item.dirt.name", "color": "blue", "italic": true }];
+            console.log(toJson(testData2));
+            console.log(JSON.stringify(testData2));
         </script>
     </head>
+
     <body>
 
 
     </body>
+
 </html>
